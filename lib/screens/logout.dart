@@ -227,14 +227,11 @@ class _MyCustom extends State<MyCustom> {
   }
 
   void checkDuplicateAccountAndPhone() async {
-    print('hi');
     // ignore: deprecated_member_use
     DatabaseReference userRef =
         // ignore: deprecated_member_use
         FirebaseDatabase.instance.reference().child("users");
-        print('hi');
     try {
-      print('hi');
       DatabaseEvent snapshot = await userRef
           .orderByChild("name")
           .equalTo(nameController.text)
@@ -369,13 +366,13 @@ class _MyCustom extends State<MyCustom> {
       print("Error creating user: $error");
     });
 //3 giây sau thực hiện
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const Register(),
-        ),
-      );
-    });
+    // Future.delayed(const Duration(seconds: 3), () {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => const Register(),
+    //     ),
+    //   );
+    // });
   }
 }

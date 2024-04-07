@@ -1,4 +1,3 @@
-import 'package:banhang/screens/menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -205,7 +204,6 @@ class _MyCustom extends State<MyCustom> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // checkDuplicateAccountAndPhone();
                         registerUser();
                       }
                     },
@@ -227,144 +225,44 @@ class _MyCustom extends State<MyCustom> {
     return phoneRegex.hasMatch(input);
   }
 
-  void checkDuplicateAccountAndPhone() async {
-    // ignore: deprecated_member_use
-    DatabaseReference userRef =
-        // ignore: deprecated_member_use
-        FirebaseDatabase.instance.reference().child("users");
+  // void checkDuplicateAccountAndPhone() async {
 
+  // }
+
+  void registerUser() async {
     try {
-      print('HI1');
-      // ignore: unnecessary_null_comparison
-      DatabaseEvent snapshot = await userRef
-          .orderByChild("name")
-          .equalTo(nameController.text)
-          .once();
-      print('HI1');
-      // ignore: unnecessary_null_comparison
-      if (snapshot != null && snapshot.snapshot.value != null) {
-        // Tài khoản đã tồn tại
-        print('HI1');
-        setState(() {
-          accountError = true;
-        });
-      } else {
-        print('HI2');
-        // ignore: unnecessary_null_comparison
-        // Kiểm tra số điện thoại
-        DatabaseEvent phoneSnapshot = await userRef
-            .orderByChild("phone")
-            .equalTo(phoneController.text)
-            .once();
-        // ignore: unnecessary_null_comparison
-        if (phoneSnapshot != null && phoneSnapshot.snapshot.value != null) {
-          // Số điện thoại đã tồn tại
-          setState(() {
-            phoneError = true;
-          });
-        } else {
-          // Đăng ký khi không có lỗi
-          registerUser();
-          return;
-        }
-      }
+      final String email = emailController.text.trim();
+      final String password = passController.text.trim();
+      final String name = nameController.text.trim();
+      final String phone = phoneController.text.trim();
+
+      // Tạo tài khoản người dùng mới với Firebase
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // Lấy ID của người dùng được tạo
+      final String userId = userCredential.user!.uid;
+
+      // Lưu thông tin người dùng vào Realtime Database (Firebase)
+      await FirebaseDatabase.instance
+          .reference()
+          .child('users')
+          .child(userId)
+          .set({
+        'name': name,
+        'phone': phone,
+      });
+
+      // Đăng kí thành công, bạn có thể thực hiện hành động tiếp theo tại đây (ví dụ: chuyển hướng đến trang khác)
     } catch (error) {
-      // ignore: avoid_print
-      print("Lỗi: $error");
+      // Xử lý lỗi nếu có
+      print('Đăng ký thất bại: $error');
+      // Hiển thị thông báo lỗi cho người dùng nếu cần
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Đăng ký thất bại: $error')),
+      );
     }
-    // Hiển thị Snackbar phù hợp dựa trên tình trạng lỗi
-    if (accountError) {
-      // Nếu chỉ trùng tài khoản
-      final snackBar = SnackBar(
-        content: const Text('Tài khoản đã tồn tại'),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {},
-        ),
-      );
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      accountError = false;
-      phoneError = false;
-    } else if (phoneError) {
-      // Nếu chỉ trùng số điện thoại
-      final snackBar = SnackBar(
-        content: const Text('Số điện thoại đã tồn tại'),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {},
-        ),
-      );
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      accountError = false;
-      phoneError = false;
-    }
-  }
-
-  void registerUser() {
-    // ignore: deprecated_member_use
-    DatabaseReference userRef =
-        // ignore: deprecated_member_use
-        FirebaseDatabase.instance.reference().child("users");
-
-    FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-      email: emailController.text,
-      password: passController.text,
-    )
-        .then((userCredential) {
-      // Lấy UID của người dùng mới đăng ký
-      String? uid = userCredential.user?.uid; // Use null-aware operator here
-
-      if (uid != null) {
-        // Tạo một map chứa thông tin người dùng
-        Map<String, dynamic> userData = {
-          "name": nameController.text,
-          "phone": phoneController.text,
-          // Các thông tin khác nếu cần
-        };
-
-        // Cập nhật thông tin người dùng trong cơ sở dữ liệu
-        userRef.child(uid).set(userData).then((_) {
-          // Xử lý thành công sau khi cập nhật cơ sở dữ liệu
-          final snackBar = SnackBar(
-            content: const Text('Đăng ký thành công!'),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {},
-            ),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          nameController.clear();
-          passController.clear();
-          emailController.clear();
-          phoneController.clear();
-        }).catchError((error) {
-          // Xử lý lỗi nếu có
-          // ignore: avoid_print
-          print("Error updating user data: $error");
-        });
-      } else {
-        // Handle the case where uid is null
-        // You might want to display an error message or handle it accordingly
-        // ignore: avoid_print
-        print("UID is null");
-      }
-    }).catchError((error) {
-      // Xử lý lỗi nếu có khi đăng ký
-      // ignore: avoid_print
-      print("Error creating user: $error");
-    });
-
-//3 giây sau thực hiện
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const Menu(),
-        ),
-      );
-    });
   }
 }

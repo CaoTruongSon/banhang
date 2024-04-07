@@ -24,7 +24,8 @@ class _MyHomePage extends State<MyHomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     //nơi lưu các nội dung trong menu
     Shop(),
-    Text('cuuu'),
+    Text('tìm kiếm'),
+    Text('giỏ hàng'),
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -109,6 +110,14 @@ class _MyHomePage extends State<MyHomePage> {
               selected: _selectedIndex == 1,
               onTap: () {
                 _onItemTapped(1);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Giỏ hàng'),
+              selected: _selectedIndex == 2,
+              onTap: () {
+                _onItemTapped(2);
                 Navigator.pop(context);
               },
             ),
