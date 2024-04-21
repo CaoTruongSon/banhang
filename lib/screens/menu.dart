@@ -1,3 +1,4 @@
+import 'package:banhang/screens/cart.dart';
 import 'package:banhang/screens/loginRegister.dart';
 import 'package:banhang/screens/shop.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _MyHomePage extends State<MyHomePage> {
     //nơi lưu các nội dung trong menu
     Shop(),
     Text('tìm kiếm'),
-    Text('giỏ hàng'),
+    Cart(),
   ];
   void _onItemTapped(int index) {
     setState(() {

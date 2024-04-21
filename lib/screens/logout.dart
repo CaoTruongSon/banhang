@@ -205,7 +205,7 @@ class _MyCustom extends State<MyCustom> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        checkDuplicateAccountAndPhone();
+                        registerUser();
                       }
                     },
                     child: const Text('Đăng kí'),
@@ -236,7 +236,7 @@ class _MyCustom extends State<MyCustom> {
           .orderByChild("name")
           .equalTo(nameController.text)
           .once(); //không có dữ liệu, giá trị này cũng sẽ là null
-      // ignore: unnecessary_null_comparison 
+      // ignore: unnecessary_null_comparison
       if (snapshot != null && snapshot.snapshot.value != null) {
         // Tài khoản đã tồn tại
         setState(() {
@@ -292,7 +292,7 @@ class _MyCustom extends State<MyCustom> {
       accountError = false;
       phoneError = false;
       emailError = false;
-    } 
+    }
     // else if (emailError) {
     //   // Nếu chỉ trùng email
     //   final snackBar = SnackBar(
@@ -312,7 +312,7 @@ class _MyCustom extends State<MyCustom> {
 
   void registerUser() {
     // ignore: deprecated_member_use
-    DatabaseReference userRef =
+    var userRef =
         // ignore: deprecated_member_use
         FirebaseDatabase.instance.reference().child("users");
     // ignore: unnecessary_null_comparison
@@ -325,17 +325,17 @@ class _MyCustom extends State<MyCustom> {
         .then((userCredential) {
       // Lấy UID của người dùng mới đăng ký
       String? uid = userCredential.user?.uid; // Use null-aware operator here
-
       if (uid != null) {
         // Tạo một map chứa thông tin người dùng
-        Map<String, dynamic> userData = {
+        var userData = {
           "name": nameController.text,
           "phone": phoneController.text,
           // Các thông tin khác nếu cần
         };
-
+print('hi1');
         // Cập nhật thông tin người dùng trong cơ sở dữ liệu
         userRef.child(uid).set(userData).then((_) {
+          print('hi');
           // Xử lý thành công sau khi cập nhật cơ sở dữ liệu
           final snackBar = SnackBar(
             content: const Text('Đăng ký thành công!'),

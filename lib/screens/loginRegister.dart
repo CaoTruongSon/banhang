@@ -1,8 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:banhang/screens/login2.dart';
-import 'package:banhang/screens/test.dart';
-
+import 'package:banhang/screens/logout.dart';
 import 'package:flutter/material.dart';
 
 
