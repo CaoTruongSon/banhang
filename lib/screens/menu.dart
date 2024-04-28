@@ -8,13 +8,15 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MyHomePage(title: 'Shop CTS');
+    return const MyHomePage(title: 'Shop CTS',
+      items: [],);
   }
 }
 
 class MyHomePage extends StatefulWidget {
   final String title;
-  const MyHomePage({required this.title, super.key});
+  final List<Map<String, String>> items; // Thêm tham số items vào đây
+  const MyHomePage({required this.title, required this.items, Key? key});
 
   @override
   State<MyHomePage> createState() => _MyHomePage();
@@ -26,7 +28,7 @@ class _MyHomePage extends State<MyHomePage> {
     //nơi lưu các nội dung trong menu
     Shop(),
     Text('tìm kiếm'),
-    Cart(),
+    Cart(items:[],),
   ];
   void _onItemTapped(int index) {
     setState(() {

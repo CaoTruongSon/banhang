@@ -1,5 +1,6 @@
 import 'package:banhang/components/combuy.dart';
 import 'package:banhang/containers/conbuy.dart';
+import 'package:banhang/screens/cart.dart';
 import 'package:flutter/material.dart';
 
 class Buy extends StatefulWidget {
@@ -19,6 +20,24 @@ class Buy extends StatefulWidget {
   }) : super(key: key);
   @override
   State<Buy> createState() => _Buy();
+  void navigateToCart(BuildContext context) {
+  items.add({
+    'name': name,
+    'image': image,
+    'place': place,
+    'price': price,
+    'loggy': loggy,
+  });
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => Cart(items: items),
+    ),
+  );
+}
+
+
 }
 
 class _Buy extends State<Buy> {
@@ -64,6 +83,9 @@ class _Buy extends State<Buy> {
               name: widget.name, 
               place: widget.place, 
               image: widget.image,
+              onTapCallback: () {
+              widget.navigateToCart(context);
+              },
             ),
             Text7(
               text7: widget.loggy,
@@ -96,6 +118,7 @@ class ButtonThree extends StatelessWidget {
   final String name;
   final String place;
   final String image;
+  final VoidCallback onTapCallback;
 
   const ButtonThree({
     required this.number,
@@ -104,6 +127,7 @@ class ButtonThree extends StatelessWidget {
     required this.name, 
     required this.place, 
     required this.image,
+    required this.onTapCallback,
   });
   @override
   Widget build(BuildContext context) {
@@ -115,11 +139,8 @@ class ButtonThree extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             icon: Icons.add,
             label: 'BUY',
-            ontap: () {
-              // TextStart();
-              // ignore: avoid_print
-              print('Number: $number, Total Price: $newprice $name $place $image');
-            }),
+            ontap: onTapCallback,
+            ),
         Button7(
           color: Theme.of(context).primaryColor,
           icon: Icons.share,

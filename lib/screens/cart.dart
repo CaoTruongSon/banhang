@@ -1,15 +1,22 @@
 import 'package:banhang/components/comshop.dart';
 import 'package:flutter/material.dart';
 
+List<Map<String, String>> items = [];
+
 class Cart extends StatelessWidget {
-  const Cart({super.key});
+  final List<Map<String, String>> items;
+
+  const Cart({
+    Key? key,
+    required this.items,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor:  const Color.fromARGB(255, 255, 255, 255)),
+          scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255)),
       home: Scaffold(
         body: Center(
           child: ExamplePara(),
@@ -23,17 +30,41 @@ class Cart extends StatelessWidget {
 class ExamplePara extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(// tạo một cửa sổ cuộn duy nhất 
+    return SingleChildScrollView(
       child: Column(
         children: [
-          for (final location in locations)
-             LocationListItem(
-              image: location.image,
-              name: location.name,
-              country: location.place,
-              loggy: location.loggy,
-              price: location.price,
+          for (final item in items)
+            LocationListItem(
+              image: item['image']!,
+              name: item['name']!,
+              country: item['place']!,
+              loggy: item['loggy']!,
+              price: item['price']!,
             ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Cảm ơn quý khách đã mua hàng'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          items.clear(); // Xóa tất cả các mục trong danh sách
+                        },
+                        child: Text('Đóng'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Text('Buy All'),
+          ),
+          SizedBox(height: 20),
         ],
       ),
     );
