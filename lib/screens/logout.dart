@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +117,7 @@ class _MyCustom extends State<MyCustom> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: TextFormField(
               controller: confirmPassController,
+              obscureText: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Xác nhận mật khẩu',
@@ -205,7 +208,7 @@ class _MyCustom extends State<MyCustom> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        registerUser();
+                        checkDuplicateAccountAndPhone();
                       }
                     },
                     child: const Text('Đăng kí'),
@@ -311,34 +314,27 @@ class _MyCustom extends State<MyCustom> {
   }
 
   void registerUser() {
-    // ignore: deprecated_member_use
-    var userRef =
-        // ignore: deprecated_member_use
-        FirebaseDatabase.instance.reference().child("users");
-    // ignore: unnecessary_null_comparison
-    // Nếu email rỗng, hiển thị lỗi
+    DatabaseReference userRef = FirebaseDatabase.instance.ref().child("users");
+
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(
       email: emailController.text,
       password: passController.text,
     )
         .then((userCredential) {
-      // Lấy UID của người dùng mới đăng ký
-      String? uid = userCredential.user?.uid; // Use null-aware operator here
+      String? uid = userCredential.user?.uid;
       if (uid != null) {
-        // Tạo một map chứa thông tin người dùng
         var userData = {
           "name": nameController.text,
           "phone": phoneController.text,
-          // Các thông tin khác nếu cần
+          // Thêm các thông tin khác nếu cần
         };
-print('hi1');
-        // Cập nhật thông tin người dùng trong cơ sở dữ liệu
+
+        // Thêm dữ liệu người dùng vào cơ sở dữ liệu
         userRef.child(uid).set(userData).then((_) {
-          print('hi');
-          // Xử lý thành công sau khi cập nhật cơ sở dữ liệu
+          // Xử lý thành công
           final snackBar = SnackBar(
-            content: const Text('Đăng ký thành công!'),
+            content: Text('Đăng ký thành công!'),
             action: SnackBarAction(
               label: 'Undo',
               onPressed: () {},
@@ -349,30 +345,26 @@ print('hi1');
           passController.clear();
           emailController.clear();
           phoneController.clear();
+          
         }).catchError((error) {
-          // Xử lý lỗi nếu có
-          // ignore: avoid_print
-          print("Error updating user data: $error");
+          // Xử lý lỗi khi thêm dữ liệu
+          print("Lỗi khi thêm dữ liệu người dùng: $error");
         });
       } else {
-        // Handle the case where uid is null
-        // You might want to display an error message or handle it accordingly
-        // ignore: avoid_print
         print("UID is null");
       }
     }).catchError((error) {
-      // Xử lý lỗi nếu có khi đăng ký
-      // ignore: avoid_print
-      print("Error creating user: $error");
+      // Xử lý lỗi khi đăng ký người dùng
+      final snackBar = SnackBar(
+        content: const Text('Email đã tồn tại.'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {},
+        ),
+      );
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      print("Lỗi khi đăng ký người dùng: $error");
     });
-//3 giây sau thực hiện
-    // Future.delayed(const Duration(seconds: 3), () {
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => const Register(),
-    //     ),
-    //   );
-    // });
   }
 }

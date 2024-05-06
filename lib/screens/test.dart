@@ -244,17 +244,13 @@ class _MyCustom extends State<MyCustom> {
       );
       // Lấy ID của người dùng được tạo
       final String userId = userCredential.user!.uid;
-
+      print('hi');
       // Lưu thông tin người dùng vào Realtime Database (Firebase)
-      await FirebaseDatabase.instance
-          .reference()
-          .child('users')
-          .child(userId)
-          .set({
+      await FirebaseDatabase.instance.ref().child('users').child(userId).set({
         'name': name,
         'phone': phone,
       });
-
+  print('hi1');
       // Đăng kí thành công, bạn có thể thực hiện hành động tiếp theo tại đây (ví dụ: chuyển hướng đến trang khác)
     } catch (error) {
       // Xử lý lỗi nếu có

@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "478387191285",
-    "project_id": "banhangapp-a4718",
-    "storage_bucket": "banhangapp-a4718.appspot.com"
+    "project_number": "189682818219",
+    "firebase_url": "https://test-ae802-default-rtdb.firebaseio.com",
+    "project_id": "test-ae802",
+    "storage_bucket": "test-ae802.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:478387191285:android:531f93f10e793fc0c3b4bc",
+        "mobilesdk_app_id": "1:189682818219:android:3ef0b5921ccba039abebee",
         "android_client_info": {
           "package_name": "com.example.banhang"
         }
@@ -15,7 +16,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBJzkPs4rQwjc5QrOTKCK9UWUEe41dM4Zk"
+          "current_key": "AIzaSyAhyTDNKU-yTt8XfO9S-wJBh-KuM-5hOhY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189682818219:android:77e388e5a4c9de9eabebee",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhyTDNKU-yTt8XfO9S-wJBh-KuM-5hOhY"
         }
       ],
       "services": {

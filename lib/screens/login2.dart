@@ -1,3 +1,4 @@
+import 'package:banhang/screens/shop.dart';
 import 'package:flutter/material.dart';
 
 class Login2 extends StatelessWidget {
@@ -37,7 +38,7 @@ class _MyCustom extends State<MyCustom> {
   TextEditingController confirmPassController = TextEditingController();
   bool accountError = false;
   bool phoneError = false;
-   bool obscureText = true;
+  bool obscureText = true;
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -107,7 +108,6 @@ class _MyCustom extends State<MyCustom> {
               },
             ),
           ),
-          
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment
@@ -119,7 +119,10 @@ class _MyCustom extends State<MyCustom> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Shop()),
+                        );
                       }
                     },
                     child: const Text('Đăng nhập'),

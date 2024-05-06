@@ -52,8 +52,8 @@ class ExamplePara extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
                           items.clear(); // Xóa tất cả các mục trong danh sách
+                          Navigator.of(context).popUntil((route) => route.isFirst);
                         },
                         child: Text('Đóng'),
                       ),

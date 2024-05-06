@@ -105,7 +105,7 @@ class LocationListItem extends StatelessWidget {
         backgroundImageKey: _backgroundImageKey,
       ),
       children: [
-        Image.network(
+        Image.asset(
           image,
           key: _backgroundImageKey,
           fit: BoxFit.cover,
@@ -167,7 +167,7 @@ class LocationListItem extends StatelessWidget {
                                 price: price,
                               ))),
                 },
-                child: Image.network(
+                child: Image.asset(
                   'assets/buy.png',
                   width: 20,
                   height: 20,

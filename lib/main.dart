@@ -7,12 +7,12 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
       options: const FirebaseOptions(
-        apiKey: 'AIzaSyBJzkPs4rQwjc5QrOTKCK9UWUEe41dM4Zk',
-        appId: '1:478387191285:android:531f93f10e793fc0c3b4bc',
-        messagingSenderId: '478387191285',
-        projectId: 'banhangapp-a4718',
-        // authDomain: 'banhangapp-a4718.firebaseapp.com',
-        databaseURL: 'https://banhangapp-a4718-default-rtdb.firebaseio.com',
+        apiKey: 'AIzaSyAhyTDNKU-yTt8XfO9S-wJBh-KuM-5hOhY',
+        appId: '1:189682818219:android:3ef0b5921ccba039abebee',
+        messagingSenderId: '189682818219',
+        projectId: 'test-ae802',
+        authDomain: 'test-ae802.firebaseapp.com',
+        databaseURL: 'https://test-ae802-default-rtdb.firebaseio.com/',
       ),
     );
 
