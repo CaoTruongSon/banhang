@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:banhang/components/comshop.dart'; // Import file chứa dữ liệu sản phẩm
 
 class SearchBar1 extends StatefulWidget {
-  const SearchBar1({Key? key}) : super(key: key);
+  final String? userName;
+  final String? phone;
+  const SearchBar1({
+    Key? key,
+    this.userName,
+    this.phone,
+  }) : super(key: key);
 
   @override
   _SearchBar1State createState() => _SearchBar1State();
@@ -35,8 +41,9 @@ class _SearchBar1State extends State<SearchBar1> {
               // Khi giá trị của ô tìm kiếm thay đổi, lọc danh sách sản phẩm dựa trên từ khóa tìm kiếm
               setState(() {
                 filteredLocations = locations
-                    .where((location) =>
-                        location.name.toLowerCase().contains(value.toLowerCase()))
+                    .where((location) => location.name
+                        .toLowerCase()
+                        .contains(value.toLowerCase()))
                     .toList();
               });
             },
@@ -44,20 +51,24 @@ class _SearchBar1State extends State<SearchBar1> {
               // Khi người dùng ấn Enter sau khi nhập từ khóa, lọc danh sách sản phẩm và hiển thị kết quả
               setState(() {
                 filteredLocations = locations
-                    .where((location) =>
-                        location.name.toLowerCase().contains(value.toLowerCase()))
+                    .where((location) => location.name
+                        .toLowerCase()
+                        .contains(value.toLowerCase()))
                     .toList();
               });
             },
           ),
-          SizedBox(height: 10), // Khoảng cách giữa ô tìm kiếm và danh sách kết quả
+          SizedBox(
+              height: 10), // Khoảng cách giữa ô tìm kiếm và danh sách kết quả
           // Hiển thị danh sách sản phẩm đã lọc
           ListView.builder(
-            shrinkWrap: true, // Giảm kích thước của ListView để nó chỉ chiếm không gian cần thiết
+            shrinkWrap:
+                true, // Giảm kích thước của ListView để nó chỉ chiếm không gian cần thiết
             itemCount: filteredLocations.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(filteredLocations[index].name), // Hiển thị tên sản phẩm
+                title: Text(
+                    filteredLocations[index].name), // Hiển thị tên sản phẩm
                 onTap: () {
                   // Xử lý khi người dùng chọn một sản phẩm trong danh sách kết quả
                   // Chuyển sang màn hình mua hàng và truyền thông tin sản phẩm
@@ -70,6 +81,8 @@ class _SearchBar1State extends State<SearchBar1> {
                         image: filteredLocations[index].image,
                         place: filteredLocations[index].place,
                         price: filteredLocations[index].price,
+                        userName: widget.userName,
+                        phone: widget.phone,
                       ),
                     ),
                   );
@@ -82,4 +95,3 @@ class _SearchBar1State extends State<SearchBar1> {
     );
   }
 }
-

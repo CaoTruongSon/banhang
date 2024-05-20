@@ -34,12 +34,16 @@ class LocationListItem extends StatelessWidget {
     required this.country,
     required this.loggy,
     required this.price,
+    required this.userName,
+    required this.phone,
   });
   final String image;
   final String name;
   final String country;
   final String loggy;
   final String price;
+  final String? userName;
+  final String? phone;
   final GlobalKey _backgroundImageKey = GlobalKey();
 
   @override
@@ -165,7 +169,10 @@ class LocationListItem extends StatelessWidget {
                                 image: image,
                                 place: country,
                                 price: price,
+                                userName: userName,
+                                phone: phone,
                               ))),
+                              print(userName)
                 },
                 child: Image.asset(
                   'assets/buy.png',

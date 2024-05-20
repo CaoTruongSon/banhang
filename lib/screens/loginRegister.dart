@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
-
-import 'package:banhang/screens/login2.dart';
-import 'package:banhang/screens/logout.dart';
+import 'package:banhang/screens/login3.dart';
+import 'package:banhang/screens/logout1.dart';
+import 'package:banhang/screens/menu.dart';
 import 'package:flutter/material.dart';
 
 
@@ -14,6 +14,15 @@ class Login extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Menu()),
+            );
+            },
+          ),
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.login)),
@@ -23,8 +32,8 @@ class Login extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-            Login2(),
-            Register(),
+            Login3(),
+            Register1(),
           ],
         ),
       ),

@@ -5,17 +5,21 @@ import 'package:banhang/screens/shop.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
-  final String? userName; // Thêm thuộc tính userName để lưu trữ tên người dùng
+  final String? userName;
+  final String? phone;
 
-  const Menu({Key? key, this.userName}) : super(key: key);
+  const Menu({Key? key, this.userName, this.phone}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('Menu - userName: $userName'); // In ra userName trong Menu
+    print('phone: $phone');
     return MyHomePage(
       isLoggedIn: userName != null, // Kiểm tra xem có tên người dùng hay không
       title: 'Shop CTS',
       items: [],
-      userName: userName, // Truyền tên người dùng vào trang MyHomePage
+      initialUserName: userName, // Truyền tên người dùng vào trang MyHomePage
+      phone: phone,
     );
   }
 }
@@ -24,29 +28,35 @@ class MyHomePage extends StatefulWidget {
   final String title;
   final List<Map<String, String>> items;
   final bool isLoggedIn;
-  final String? userName; // Thêm thuộc tính userName
+  final String? initialUserName; // Đổi tên thuộc tính này
+  final String? phone;
 
   const MyHomePage({
     required this.title,
     required this.items,
     required this.isLoggedIn,
-    this.userName, // Cập nhật constructor để nhận giá trị userName
+    this.initialUserName,
+    this.phone,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePage();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
-class _MyHomePage extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  String? userName;
+  String? phone;
 
-  static final List<Widget> _widgetOptions = <Widget>[
-    const Shop(),
-    SearchBar1(),
-    const Cart(items: []),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    userName = widget.initialUserName;
+    phone = widget.phone;
+    print(
+        'MyHomePage - userName: $userName'); // In ra userName trong MyHomePage
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -56,64 +66,81 @@ class _MyHomePage extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _widgetOptions = <Widget>[
+      Shop(userName: userName, phone: phone,),
+      SearchBar1(userName: userName, phone: phone,),
+      Cart(
+        items: widget.items,
+        userName: userName,
+        phone: phone,
+      ), // Truyền userName xuống Cart
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           widget.title,
           style: const TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
+            color: Colors.white,
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color.fromARGB(228, 0, 0, 0),
         actions: [
-  if (!widget.isLoggedIn && widget.userName == null) // Nếu chưa đăng nhập và không có tên người dùng
-    Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Login()), // Điều hướng đến trang đăng nhập
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-        ),
-        child: const Text('Đăng nhập'),
-      ),
-    ),
-  if (widget.isLoggedIn || widget.userName != null) ...[
-    // Nếu đã đăng nhập hoặc có tên người dùng
-    Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: Text(
-         widget.userName ?? 'Tên Tài Khoản', // Hiển thị tên người dùng hoặc 'Tên Tài Khoản' nếu không có
-        style: const TextStyle(fontSize: 16),
-      ),
-    ),
-    PopupMenuButton<String>(
-      onSelected: (value) {
-        if (value == 'change_password') {
-          // Thực hiện thay đổi mật khẩu
-        } else if (value == 'logout') {
-          // Thực hiện đăng xuất
-        }
-      },
-      itemBuilder: (BuildContext context) => [
-        const PopupMenuItem<String>(
-          value: 'change_password',
-          child: Text('Đổi mật khẩu'),
-        ),
-        const PopupMenuItem<String>(
-          value: 'logout',
-          child: Text('Thoát'),
-        ),
-      ],
-    ),
-  ],
-],
-
+          if (!widget.isLoggedIn && userName == null)
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: ElevatedButton(
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Login()),
+                  );
+                  if (result != null && result is String) {
+                    setState(() {
+                      // Cập nhật userName khi quay lại từ màn hình đăng nhập
+                      userName = result;
+                    });
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                ),
+                child: const Text('Đăng nhập'),
+              ),
+            ),
+          if (widget.isLoggedIn || userName != null) ...[
+            Padding(
+              padding: const EdgeInsets.only(right: 2),
+              child: Text(
+                'Xin chào, $userName',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'change_password') {
+                  // Thực hiện thay đổi mật khẩu
+                } else if (value == 'logout') {
+                  // Thực hiện đăng xuất
+                }
+              },
+              itemBuilder: (BuildContext context) => [
+                const PopupMenuItem<String>(
+                  value: 'change_password',
+                  child: Text('Đổi mật khẩu'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'logout',
+                  child: Text('Thoát'),
+                ),
+              ],
+            ),
+          ],
+        ],
       ),
       body: Center(
         child: _widgetOptions[_selectedIndex],

@@ -1,5 +1,5 @@
-import 'dart:async';
-
+import 'package:banhang/screens/login2.dart';
+import 'package:banhang/screens/loginRegister.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -214,6 +214,19 @@ class _MyCustom extends State<MyCustom> {
                     child: const Text('Đăng kí'),
                   ),
                 ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Login()),
+                      );
+                    },
+                    child: const Text('Back'),
+                  ),
+                ),
               ],
             ),
           ),
@@ -327,6 +340,7 @@ class _MyCustom extends State<MyCustom> {
         var userData = {
           "name": nameController.text,
           "phone": phoneController.text,
+          "pass": passController.text,
           // Thêm các thông tin khác nếu cần
         };
 
@@ -345,7 +359,12 @@ class _MyCustom extends State<MyCustom> {
           passController.clear();
           emailController.clear();
           phoneController.clear();
-          
+          Future.delayed(const Duration(seconds: 3), () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const Login2()),
+            );
+          });
         }).catchError((error) {
           // Xử lý lỗi khi thêm dữ liệu
           print("Lỗi khi thêm dữ liệu người dùng: $error");

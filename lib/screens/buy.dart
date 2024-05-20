@@ -9,6 +9,8 @@ class Buy extends StatefulWidget {
   final String image;
   final String place;
   final String price;
+  final String? userName;
+  final String? phone;
 
   const Buy({
     Key? key,
@@ -17,27 +19,31 @@ class Buy extends StatefulWidget {
     required this.image,
     required this.place,
     required this.price,
+    required this.userName,
+    required this.phone,
   }) : super(key: key);
   @override
   State<Buy> createState() => _Buy();
   void navigateToCart(BuildContext context) {
-  items.add({
-    'name': name,
-    'image': image,
-    'place': place,
-    'price': price,
-    'loggy': loggy,
-  });
+    items.add({
+      'name': name,
+      'image': image,
+      'place': place,
+      'price': price,
+      'loggy': loggy,
+    });
 
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => Cart(items: items),
-    ),
-  );
-}
-
-
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Cart(
+          items: items,
+          userName: userName,
+          phone: phone,
+        ),
+      ),
+    );
+  }
 }
 
 class _Buy extends State<Buy> {
@@ -79,12 +85,12 @@ class _Buy extends State<Buy> {
             ),
             ButtonThree(
               number: number,
-              newprice: newprice, 
-              name: widget.name, 
-              place: widget.place, 
+              newprice: newprice,
+              name: widget.name,
+              place: widget.place,
               image: widget.image,
               onTapCallback: () {
-              widget.navigateToCart(context);
+                widget.navigateToCart(context);
               },
             ),
             Text7(
@@ -123,9 +129,9 @@ class ButtonThree extends StatelessWidget {
   const ButtonThree({
     required this.number,
     required this.newprice,
-    super.key, 
-    required this.name, 
-    required this.place, 
+    super.key,
+    required this.name,
+    required this.place,
     required this.image,
     required this.onTapCallback,
   });
@@ -136,11 +142,11 @@ class ButtonThree extends StatelessWidget {
           .spaceEvenly, // các phần tử cách đều nhau ví dụ 3 phần tử thì 3 phần tử cách đều và bên cạnh trái,phải cũng cách đều các phần tử ,,row: ngang, column: dọc
       children: [
         Button7(
-            color: Theme.of(context).primaryColor,
-            icon: Icons.add,
-            label: 'BUY',
-            ontap: onTapCallback,
-            ),
+          color: Theme.of(context).primaryColor,
+          icon: Icons.add,
+          label: 'BUY',
+          ontap: onTapCallback,
+        ),
         Button7(
           color: Theme.of(context).primaryColor,
           icon: Icons.share,
