@@ -1,13 +1,15 @@
-import 'package:banhang/components/comshop.dart';
+import 'package:banhang/screens/loginRegister.dart';
 import 'package:flutter/material.dart';
+import 'package:banhang/components/comshop.dart';
 
 class Shop extends StatelessWidget {
   final String? userName;
   final String? phone;
+
   const Shop({
     Key? key,
-    this.userName,
-    this.phone,
+    required this.userName,
+    required this.phone,
   }) : super(key: key);
 
   @override
@@ -15,17 +17,36 @@ class Shop extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255)),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      ),
       home: Scaffold(
-        body: Center(
-          child: ExamplePara(userName: userName, phone: phone),
-        ),
+        body: userName != null
+            ? Center(
+                child: ExamplePara(
+                  userName: userName,
+                  phone: phone,
+                ),
+              )
+            : Center(
+                child: AlertDialog(
+                  title: Text('Yêu cầu đăng nhập'),
+                  content: Text('Bạn cần đăng nhập để tiếp tục.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Login())); // Chuyển đến màn hình đăng nhập
+                      },
+                      child: Text('Đăng nhập'),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }
 }
 
-// ignore: use_key_in_widget_constructors
 class ExamplePara extends StatelessWidget {
   final String? userName;
   final String? phone;
@@ -37,7 +58,6 @@ class ExamplePara extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      // tạo một cửa sổ cuộn duy nhất
       child: Column(
         children: [
           for (final location in locations)
@@ -48,7 +68,7 @@ class ExamplePara extends StatelessWidget {
               loggy: location.loggy,
               price: location.price,
               userName: userName,
-              phone:phone,
+              phone: phone,
             ),
         ],
       ),
@@ -58,59 +78,59 @@ class ExamplePara extends StatelessWidget {
 
 const locations = [
   Location(
-    name: 'Mount Rushmore',
-    place: 'U.S.A',
+    name: 'Hamberger',
+    place: 'Việt Nam',
     image: 'assets/mon1.jpg',
     price: '20000',
     loggy:
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578meters above sea level, it is one of the largerAlpine Lakes. A gondola ride from Kandersteg,followed by a half-hour walk through pasturesand pine forest, leads you to the lake, which awarms to 20 degrees Celsius in the summer.Activities enjoyed here include rowing, andriding the summer toboggan run.',
+        'Làm hamburger không khó, nhất là nếu bạn đã có kinh nghiệm làm bánh  mì rồi. Có nhiều cách làm vỏ bánh hamburger nhưng mình chọn bánh mì sữa Hokkaido vì đây là một trong những công thức bánh mì ngọt mà mình ưng ý nhất từ trước đến giờ.',
   ),
   Location(
-    name: 'Gardens By The Bay',
-    place: 'Singapore',
+    name: 'Bánh Xếp',
+    place: 'Việt Nam',
     image: 'assets/mon2.jpeg',
     price: '20000',
     loggy:
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578meters above sea level, it is one of the largerAlpine Lakes. A gondola ride from Kandersteg,followed by a half-hour walk through pasturesand pine forest, leads you to the lake, which awarms to 20 degrees Celsius in the summer.Activities enjoyed here include rowing, andriding the summer toboggan run.',
+        'Phần nhân bánh mình dùng rau xà lách, củ cải đỏ, salad guacamole (salad quả bơ kiểu Mexico), phô-mai mềm và thịt bò viên rán. Thịt bò mình chỉ trộn với ít muối, tiêu, bột hành, bột tỏi và oregano khô thôi.',
   ),
   Location(
-    name: 'Machu Picchu',
-    place: 'Peru',
+    name: 'Mỳ Ý',
+    place: 'Việt Nam',
     image: 'assets/mon3.jpg',
     price: '20000',
     loggy:
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578meters above sea level, it is one of the largerAlpine Lakes. A gondola ride from Kandersteg,followed by a half-hour walk through pasturesand pine forest, leads you to the lake, which awarms to 20 degrees Celsius in the summer.Activities enjoyed here include rowing, andriding the summer toboggan run.',
+        'Mỳ Ý có xuất xứ từ Italia vào khoảng thế kỷ Ban đầu, chỉ có các thành phần cơ bản như trứng và bột mì được sử dụng để sản xuất loại mỳ này. Tuy nhiên, hiện nay có rất nhiều loại mỳ khác nhau với hình dáng và kích thước khác nhau.',
   ),
   Location(
-    name: 'Vitznau',
-    place: 'Switzerland',
+    name: 'Bánh Đa Tôm',
+    place: 'Việt Nam',
     image: 'assets/mon4.jpg',
     price: '20000',
     loggy:
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578meters above sea level, it is one of the largerAlpine Lakes. A gondola ride from Kandersteg,followed by a half-hour walk through pasturesand pine forest, leads you to the lake, which awarms to 20 degrees Celsius in the summer.Activities enjoyed here include rowing, andriding the summer toboggan run.',
+        'Việc chọn loại bánh đa phù hợp với từng món ăn là rất quan trọng để giúp cho món ăn được thơm ngon và ngon miệng hơn. Các loại bánh đa có thể khác nhau về kích cỡ, độ dày hay độ dai của sợVì vậy, bạn nên tìm hiểu kỹ và chọn loại bánh đa phù hợp với món ăn của mình.',
   ),
   Location(
-    name: 'Bali',
-    place: 'Indonesia',
+    name: 'Bánh Hoa Quả',
+    place: 'Việt Nam',
     image: 'assets/mon5.jpg',
     price: '20000',
     loggy:
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578meters above sea level, it is one of the largerAlpine Lakes. A gondola ride from Kandersteg,followed by a half-hour walk through pasturesand pine forest, leads you to the lake, which awarms to 20 degrees Celsius in the summer.Activities enjoyed here include rowing, andriding the summer toboggan run.',
+        'trong lại chứa đựng những bí quyết gia truyền độc đáo về chất lượng đặc biệt của món đặc sản miền quê Bắc Bộ. Những nguyên liệu để làm bánh đậu xanh như đường, mỡ hoặc dầu ăn phải được lựa chọn kỹ càng. Ông Lương Xuân Hát, Quản đốc phân xưởng.',
   ),
   Location(
-    name: 'Mexico City',
-    place: 'Mexico',
+    name: 'Salad',
+    place: 'Việt Nam',
     image: 'assets/mon6.jpg',
     price: '20000',
     loggy:
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578meters above sea level, it is one of the largerAlpine Lakes. A gondola ride from Kandersteg,followed by a half-hour walk through pasturesand pine forest, leads you to the lake, which awarms to 20 degrees Celsius in the summer.Activities enjoyed here include rowing, andriding the summer toboggan run.',
+        'Món salad được xuất hiện từ lâu, dưới nhiều hình thức chế biến khác nhau. Chẳng hạn, người La Mã, người Hy Lạp cổ đại và người Ba Tư đã trộn hỗn hợp rau củ với một loại nước sốt để ăn. Những món ăn rau trộn như vậy đã trở nên phổ biến ở châu Âu sau cuộc xâm lấn của đế chế La Mã và Hy Lạp.',
   ),
   Location(
-    name: 'Cairo',
+    name: 'Salad đặc biệt',
     place: 'Egypt',
     image: 'assets/mon7.jpg',
     price: '20000',
     loggy:
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578meters above sea level, it is one of the largerAlpine Lakes. A gondola ride from Kandersteg,followed by a half-hour walk through pasturesand pine forest, leads you to the lake, which awarms to 20 degrees Celsius in the summer.Activities enjoyed here include rowing, andriding the summer toboggan run.',
+        'Trong cuốn sách tựa Acetaria: A Discourse on Sallets (tạm dịch là) của nhà văn John Evelyn (đồng thời là chuyên gia nông nghiệp) đã đề cập đến vấn đề người Anh cần phải có thời gian để dùng quen món rau trộn. Lúc bấy giờ, nữ hoàng Scotland là Mary đã dùng món rau trộn gồm có quả anh đào, nấm, củ cần tây và trứng luộc được rưới với mùi tạt kem. ',
   ),
 ];

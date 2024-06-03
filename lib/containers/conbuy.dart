@@ -13,7 +13,7 @@ class Counter extends StatefulWidget {
 
 class _Counter extends State<Counter> {
   int get totalPrice => int.parse(widget.price) * number;
-  int number = 0;
+  int number = 1;
   void _decreate() {
     setState(() {
       if (number > 0) {

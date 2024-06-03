@@ -1,14 +1,18 @@
 import 'package:banhang/screens/cart.dart';
 import 'package:banhang/screens/loginRegister.dart';
+import 'package:banhang/screens/out.dart';
+import 'package:banhang/screens/pass.dart';
 import 'package:banhang/screens/search.dart';
 import 'package:banhang/screens/shop.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Menu extends StatelessWidget {
   final String? userName;
   final String? phone;
+  final String? pass;
 
-  const Menu({Key? key, this.userName, this.phone}) : super(key: key);
+  const Menu({Key? key, this.userName, this.phone, this.pass}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +24,7 @@ class Menu extends StatelessWidget {
       items: [],
       initialUserName: userName, // Truyền tên người dùng vào trang MyHomePage
       phone: phone,
+      pass: pass,
     );
   }
 }
@@ -30,6 +35,7 @@ class MyHomePage extends StatefulWidget {
   final bool isLoggedIn;
   final String? initialUserName; // Đổi tên thuộc tính này
   final String? phone;
+  final String? pass;
 
   const MyHomePage({
     required this.title,
@@ -37,6 +43,7 @@ class MyHomePage extends StatefulWidget {
     required this.isLoggedIn,
     this.initialUserName,
     this.phone,
+    this.pass,
     Key? key,
   }) : super(key: key);
 
@@ -48,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   String? userName;
   String? phone;
+  String? pass;
 
   @override
   void initState() {
@@ -59,21 +67,73 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onItemTapped(int index) {
+    if (userName == null) {
+      _showLoginDialog();
+      return;
+    }
     setState(() {
       _selectedIndex = index;
     });
   }
 
+  void _showLoginDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Thông báo'),
+          content: const Text('Xin hãy đăng nhập để sử dụng chức năng này.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Đóng'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Login()),
+                );
+              },
+              child: const Text('Đăng nhập'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _logout() {
+    setState(() {
+      userName = null;
+      phone = null;
+    });
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const Login()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
-      Shop(userName: userName, phone: phone,),
-      SearchBar1(userName: userName, phone: phone,),
+      Shop(
+        userName: userName,
+        phone: phone,
+      ),
+      SearchBar1(
+        userName: userName,
+        phone: phone,
+      ),
       Cart(
         items: widget.items,
         userName: userName,
         phone: phone,
       ), // Truyền userName xuống Cart
+      Out(),
     ];
 
     return Scaffold(
@@ -124,8 +184,16 @@ class _MyHomePageState extends State<MyHomePage> {
               onSelected: (value) {
                 if (value == 'change_password') {
                   // Thực hiện thay đổi mật khẩu
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ChangePassword(userName: userName,pass: pass,), // Navigate to ChangePassword screen
+                    ),
+                  );
                 } else if (value == 'logout') {
                   // Thực hiện đăng xuất
+                  _logout();
                 }
               },
               itemBuilder: (BuildContext context) => [
@@ -181,6 +249,14 @@ class _MyHomePageState extends State<MyHomePage> {
               selected: _selectedIndex == 2,
               onTap: () {
                 _onItemTapped(2);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Thoát'),
+              selected: _selectedIndex == 3,
+              onTap: () {
+                _onItemTapped(3);
                 Navigator.pop(context);
               },
             ),

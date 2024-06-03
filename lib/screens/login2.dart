@@ -167,7 +167,7 @@ class _MyCustomState extends State<MyCustom> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => Menu(userName: nameController.text, phone: userPhone ?? '')),
+                builder: (context) => Menu(userName: nameController.text, phone: userPhone ?? '',pass: passController.text)),
           );
         } else {
           // Hiển thị thông báo khi mật khẩu không đúng
